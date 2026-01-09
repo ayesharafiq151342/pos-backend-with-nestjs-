@@ -22,7 +22,19 @@ async deleteBySku(sku: string): Promise<boolean> {
   const result = await this.productRepository.delete({ sku });
   // ✅ safely check affected
   return (result.affected ?? 0) > 0;
+}async updateBySku(sku: string, updateData: Partial<Product>) {
+  const result = await this.productRepository.update(
+    { sku },
+    updateData,
+  );
+
+  if (!result.affected || result.affected === 0) {
+    return { success: false, message: 'Product not found' };
+  }
+
+  return { success: true };
 }
+
 
 }
 

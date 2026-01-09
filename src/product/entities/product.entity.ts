@@ -72,8 +72,13 @@ export class Product {
  @Column({ type:"json", nullable:true })
  images:string[];
 
- @Column({ type:"json", nullable:true })
- warranty:any;
+  @Column({ type: 'json', nullable: true })
+  warranty: {
+    warranty: string;
+    manufacturer: string;
+    manufacturedDate: string;
+    expiryDate: string;
+  };
 
  @Column({ nullable:true })
  mode:string;

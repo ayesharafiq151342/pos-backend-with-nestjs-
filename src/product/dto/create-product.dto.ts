@@ -68,8 +68,13 @@ export class CreateProductDto {
   @IsOptional()
   images?: string[];
 
-  @IsOptional()
-  warranty?: any;
+ 
+  warranty?: {
+    warranty: string;
+    manufacturer: string;
+    manufacturedDate: string;
+    expiryDate: string;
+  };
 
   @IsOptional()
   mode?: string;
