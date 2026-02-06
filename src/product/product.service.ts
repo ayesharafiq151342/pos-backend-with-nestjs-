@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+// src/product/product.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+
 @Injectable()
 export class ProductService {
   constructor(
@@ -18,23 +21,23 @@ export class ProductService {
   async findAll(): Promise<Product[]> {
     return this.productRepository.find();
   }
-async deleteBySku(sku: string): Promise<boolean> {
-  const result = await this.productRepository.delete({ sku });
-  // ✅ safely check affected
-  return (result.affected ?? 0) > 0;
-}async updateBySku(sku: string, updateData: Partial<Product>) {
-  const result = await this.productRepository.update(
-    { sku },
-    updateData,
-  );
 
-  if (!result.affected || result.affected === 0) {
-    return { success: false, message: 'Product not found' };
+  async findOneBySku(sku: string): Promise<Product> {
+    const product = await this.productRepository.findOne({ where: { sku } });
+    if (!product) throw new NotFoundException('Product not found');
+    return product;
   }
 
-  return { success: true };
+  async updateBySku(sku: string, updateData: UpdateProductDto) {
+    const result = await this.productRepository.update({ sku }, updateData);
+    if (!result.affected || result.affected === 0) {
+      throw new NotFoundException('Product not found');
+    }
+    return this.findOneBySku(sku);
+  }
+
+  async deleteBySku(sku: string): Promise<{ success: boolean }> {
+    const result = await this.productRepository.delete({ sku });
+    return { success: (result.affected ?? 0) > 0 };
+  }
 }
-
-
-}
-

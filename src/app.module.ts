@@ -13,11 +13,11 @@ import { UploadModule } from './upload/upload.module';
       password: '123',
       database: 'db',
       autoLoadEntities: true, // ✅ automatically loads all entities from modules
-      synchronize: true,      // ✅ dev only
+      synchronize: true,
     }),
     WarrantyModule,
     ProductModule,
-  UploadModule    // ✅ import your feature modules
+  UploadModule
   ],
 })
 export class AppModule {}
