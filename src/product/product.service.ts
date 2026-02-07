@@ -1,5 +1,5 @@
 // src/product/product.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
@@ -28,16 +28,21 @@ export class ProductService {
     return product;
   }
 
-  async updateBySku(sku: string, updateData: UpdateProductDto) {
-    const result = await this.productRepository.update({ sku }, updateData);
-    if (!result.affected || result.affected === 0) {
-      throw new NotFoundException('Product not found');
-    }
-    return this.findOneBySku(sku);
+async updateBySku(sku: string, dto: UpdateProductDto) {
+  const product = await this.productRepository.findOne({ where: { sku } });
+  if (!product) {
+    throw new NotFoundException('Product not found');
   }
+
+  Object.assign(product, dto);
+  return this.productRepository.save(product);
+}
+
 
   async deleteBySku(sku: string): Promise<{ success: boolean }> {
     const result = await this.productRepository.delete({ sku });
     return { success: (result.affected ?? 0) > 0 };
   }
+
+
 }

@@ -22,7 +22,8 @@ export class CreateProductDto {
   @IsNumber() tax: number;
   @IsString() discountType: string;
   @IsNumber() discountValue: number;
-  @IsNumber() quantityAlert: number;
+  @IsNumber() quantityAlert: number;  
+  @IsString() status: string;   
   @IsArray() @IsOptional() images?: string[];
   @IsOptional() warranty?: {
     warranty: string;

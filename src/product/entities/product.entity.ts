@@ -42,7 +42,8 @@ export class Product {
 
   @Column()
   barcodeSymbology: string;
-
+ @Column({ default: 'Active' })  // status column
+  status: string;
   @Column({ type: 'text' })
   description: string;
 
