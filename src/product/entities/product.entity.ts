@@ -75,7 +75,8 @@ export class Product {
 
   @Column('simple-array', { nullable: true })
   images?: string[];
-
+  @Column({ nullable: true })
+  expiryDate: Date; // top-level
   @Column('json', { nullable: true })
   warranty?: {
     warranty: string;

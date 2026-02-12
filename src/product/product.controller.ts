@@ -15,6 +15,11 @@ export class ProductController {
 
   // Get all expired products
 
+// In ProductController
+@Get('expired')
+getExpiredProducts() {
+  return this.productService.findExpired(); // DB query for expired products
+}
 
 
   // Get all low-stock products
@@ -28,11 +33,7 @@ export class ProductController {
   findAll() {
     return this.productService.findAll();
   }
-// products.controller.ts
-@Get('expired')
-getExpiredProducts() {
-  return this.productService.findExpired(); // DB query
-}
+
 
 
 
